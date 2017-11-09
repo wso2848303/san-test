@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+    </style>
+</head>
+<body>
+  <div class="example" id="dataTest"></div>
+  <div class="example" id="listTest"></div>
+  <script type="text/javascript">
+    var DataTest = san.defineComponent({
+      template: [
+        '<div>',
+          '<span>setData: {{data}}</span>',
+          '<input type="text" value="{= inputData =}" />',
+          '<button on-click="handleClickSetData(inputData)">set data</button>',
+        '</div>'
+      ].join(''),
+      initData: function () {
+        return {
+          data: '',
+          inputData: ''
+        }
+      },
+      handleClickSetData: function (data) {
+        this.data.set('data', data)
+      }
+    });
+    var dataTest = new DataTest();
+    dataTest.attach(document.getElementById('dataTest'));
+
+    var ListTest = san.defineComponent({
+      template: [
+        '<div>',
+          '<table>',
+            '<tr>',
+              '<td>',
+                '<button on-click="clickPush">push</button><input type="text" placeholder="push value" value="{= pushValue =}" />',
+              '</td>',
+              '<td>',
+                '<button on-click="clickPop">pop</button>',
+              '</td>',
+              '<td>',
+                '<button on-click="clickUnshift">unshift</button><input type="text" placeholder="unshift value" value="{= unshiftValue =}" />',
+              '</td>',
+              '<td>',
+                '<button on-click="clickShift">shift</button>',
+              '</td>',
+              '<td>',
+                '<button on-click="clickRemove">remove</button><input type="text" placeholder="remove value" value="{= removeValue =}" />',
+              '</td>',
+              '<td>',
+                '<button on-click="clickRemoveAt">removeAt</button><input type="text" placeholder="removeAt value" value="{= removeAtValue =}" />',
+              '</td>',
+              '<td>',
+                '<button on-click="clickSplice">splice</button><input type="text" placeholder="splice index value" value="{= spliceIndex =}" /><input type="text" placeholder="splice length value" value="{= spliceLength =}" />',
+              '</td>',
+            '</tr>',
+            '<tr>',
+              '<td colspan="7">',
+                '<ul>',
+                  '<li s-for="item, index in list">{{item}}</li>',
+                '</ul>',
+              '</td>',
+            '</tr>',
+          '</table>',
+        '</div>'
+      ].join(''),
+      initData: function () {
+        return {
+          list: ['a', 'b', 'c', 'd'],
+          pushValue: '',
+          unshiftValue: '',
+          removeValue: '',
+          removeAtValue: '',
+          spliceIndex: '',
+          spliceLength: ''
+        }
+      },
+      clickPush: function () {
+        var pushValue = this.data.get('pushValue');
+        if (pushValue && pushValue !== '') {
+          this.data.push('list', pushValue);
+          this.data.set('pushValue', '');
+        }
+      },
+      clickPop: function () {
+        this.data.pop('list');
+      },
+      clickUnshift: function () {
+        var unshiftValue = this.data.get('unshiftValue');
+        if (unshiftValue && unshiftValue !== '') {
+          this.data.unshift('list', unshiftValue);
+          this.data.set('unshiftValue', '');
+        }
+      },
+      clickShift: function () {
+        this.data.shift('list');
+      },
+      clickRemove: function () {
+        var removeValue = this.data.get('removeValue');
+        this.data.set('removeValue', '');
+        this.data.remove('list', removeValue);
+      },
+      clickRemoveAt: function () {
+        var removeAtValue = this.data.get('removeAtValue');
+        this.data.set('removeAtValue', '');
+        this.data.removeAt('list', removeAtValue);
+      },
+      clickSplice: function () {
+        var spliceIndex = this.data.get('spliceIndex');
+        var spliceLength = this.data.get('spliceLength');
+        if (spliceIndex.match(/^\d+$/) && spliceLength.match(/^\d+$/)) {
+          this.data.splice('list', [spliceIndex, spliceLength]);
+        }
+        this.data.set('spliceIndex', '');
+        this.data.set('spliceLength', '');
+      }
+    });
+    var listTest = new ListTest();
+    listTest.attach(document.getElementById('listTest'));
+  </script>
+</body>
+</html>

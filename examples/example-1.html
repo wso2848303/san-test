@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+      .list-hidden {background: #000;}
+    </style>
+</head>
+<body>
+  <div class="example" id="helloWorld"></div>
+  <div class="example" id="checkBox"></div>
+  <div class="example" id="inputDisplay"></div>
+  <div class="example" id="nesting"></div>
+  <div class="example" id="hidden"></div>
+  <div class="example" id="triggleStyle"></div>
+
+  <script type="text/javascript">
+  var HelloWorld = san.defineComponent({
+    template: '<div><label<span data-text="{{text}}" on-click="clickLabel">{{text}}</span></div>',
+    initData: function () {
+      return {
+        text: 'Hello World!'
+      }
+    },
+    clickLabel: function () {
+      this.fire('click', this.data.get('bindText')); //激活了传入的click事件
+    }
+  });
+  var helloWorld = new HelloWorld();
+  helloWorld.attach(document.getElementById('helloWorld'));
+
+  var InputDisplay = san.defineComponent({
+    template: '<div><span data-text="{= text =}">{{= text =}}</span><input type="text" value="{= text =}" /><button on-click="clickButton(text)">alert value</button></div>',
+    clickButton: function (text) {
+      alert(text);
+    }
+  });
+  var inputDisplay = new InputDisplay();
+  inputDisplay.attach(document.getElementById('inputDisplay'));
+
+  var CheckBox = san.defineComponent({
+      template: '<div>'
+          + '<label><input type="checkbox" value="errorrik" checked="{= online =}">errorrik</label>'
+          + '<label><input type="checkbox" value="otakustay" checked="{= online =}">otakustay</label>'
+          + '<label><input type="checkbox" value="firede" checked="{= online =}">firede</label>'
+          + '<br>{{online}}'
+          + '</div>',
+      initData: function () {
+          return {
+              online: []
+          };
+      },
+      attached: function () {
+          this.data.set('online', ['errorrik', 'otakustay']);
+      }
+  });
+  var checkBox = new CheckBox();
+  checkBox.attach(document.getElementById('checkBox'));
+
+  var Nesting = san.defineComponent({
+    components: {
+      'ui-helloworld': HelloWorld
+    },
+    template: '<div><ui-helloworld prop-text="Hello World of Nesting! Please click me!" on-click="labelClick($event)" bind-text="Hello World of Nesting!!!"></ui-helloworld></div>',
+    labelClick: function (msg) {
+      alert(msg);
+    }
+  });
+  var nesting = new Nesting();
+  nesting.attach(document.getElementById('nesting'));
+
+  var Hidden = san.defineComponent({
+    template: '<div><button on-click="toggle">triggle class</button><ul class="list{{isHidden ? \' list-hidden\' : \'\'}}">...</ul></div>',
+    toggle: function () {
+        var isHidden = this.data.get('isHidden');
+        this.data.set('isHidden', !isHidden);
+    }
+  });
+  var hidden = new Hidden();
+  hidden.attach(document.getElementById('hidden'));
+
+
+  var TriggleStyle = san.defineComponent({
+    template: '<ul><li s-for="item, index in datasource"style="{{item.color ? \'background:\' + item.color : \'\'}}"class="{{item.id == value ? \'selected\' : \'\'}}"on-click="itemClick(index)">{{ item.title }}</li></ul>',
+    initData: function () {
+      return {
+        datasource: [{
+          color: 'red',
+          id: '0',
+          title: 'aaa'
+        }, {
+          color: 'yellow',
+          id: '1',
+          title: 'bbb'
+        }],
+        value: '0'
+      }
+    },
+    itemClick: function (msg) {
+      alert(msg);
+    }
+  })
+  var triggleStyle = new TriggleStyle();
+  triggleStyle.attach(document.getElementById('triggleStyle'));
+  </script>
+</body>
+</html>

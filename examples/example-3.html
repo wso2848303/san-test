@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+    </style>
+</head>
+<body>
+  <div class="example" id="form"></div>
+  <script type="text/javascript">
+    var Form = san.defineComponent({
+      template: [
+        '<div>',
+          '<input placeholder="name" type="text" value="{= name =}" /><br />',
+          '<input placeholder="age" type="text" value="{= age =}"/><br />',
+          '<div>',
+            '<label for="gender">male</label><input type="radio" value="0" checked="{= gender =}" name="gender" />',
+            '<label for="gender">female</label><input type="radio" value="1" checked="{= gender =}" name="gender" />',
+          '</div>',
+          '<div>',
+            '<label for="hobby">coding</label><input type="checkbox" value="coding" checked="{= hobby =}" name="hobby" />',
+            '<label for="hobby">reading</label><input type="checkbox" value="reading" checked="{= hobby =}" name="hobby" />',
+            '<label for="hobby">cooking</label><input type="checkbox" value="cooking" checked="{= hobby =}" name="hobby" />',
+            '<label for="hobby">music</label><input type="checkbox" value="music" checked="{= hobby =}" name="hobby" />',
+          '</div>',
+          '<div>',
+            '<label>job</label>',
+            '<select name="job" value="{= job =}">',
+              '<option s-for="item in jobs" value="{{item}}">{{item}}</option>',
+            '</select>',
+          '</div>',
+          '<br />',
+          '<button on-click="handleSubmit">submit</button>',
+        '</div>'
+      ].join(''),
+      initData: function () {
+        return {
+          hobby: [], //这里要注意，checkbox内容对应的是一个array，因此必须要在数据初始化时进行定义，否则在获取数据时会获取不到
+          jobs: ['student', 'officer', 'doctor', 'teacher', 'neet'],
+          job: 'neet' //建议对select选中值进行初始化，否则如果不进行选择事件，直接取值是空的
+        }
+      },
+      handleSubmit: function () {
+        alert(JSON.stringify(this.data.raw));
+      }
+    });
+    var form = new Form();
+    form.attach(document.getElementById('form'));
+  </script>
+</body>
+</html>

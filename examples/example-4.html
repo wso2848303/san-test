@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+    </style>
+</head>
+<body>
+  <div class="example" id="lifecycle"></div>
+  <script type="text/javascript">
+    var Lifecycle = san.defineComponent({
+      template: [
+        '<div>lifecycle, look at the console!</div>'
+      ].join(''),
+      compiled: function () {
+        console.log('compiled');
+      },
+      inited: function () {
+        console.log('inited');
+      },
+      created: function () {
+        console.log('created');
+      },
+      attached: function () {
+        console.log('attached');
+        this.data.set('test', 'test1');
+        console.log(this.data.get('test'));
+        this.data.set('test', 'test2');
+        console.log(this.data.get('test'));
+      },
+      detached: function () {
+        console.log('detached');
+      },
+      disposed: function () {
+        console.log('disposed');
+      }
+    });
+    var lifecycle = new Lifecycle();
+    lifecycle.attach(document.getElementById('lifecycle'));
+  </script>
+</body>
+</html>
