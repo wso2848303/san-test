@@ -322,3 +322,11 @@ var test = new Test({
 ```html
 <div>{{text | testFilter('add message')}}</div>
 ```
+
+# 消息 dispatch/message
+
+消息将沿着组件树向上传递，__直到遇到第一个处理该消息的组件__，则停止。通过 messages 可以声明组件要处理的消息。messages 是一个对象，key 是消息名称，value 是消息处理的函数，接收一个包含 target(派发消息的组件) 和 value(消息的值) 的参数对象。
+
+消息主要用于组件与非 owner 的上层组件进行通信。
+
+例子为 ./examples/example-7.html
