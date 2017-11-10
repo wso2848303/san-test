@@ -330,3 +330,11 @@ var test = new Test({
 消息主要用于组件与非 owner 的上层组件进行通信。
 
 例子为 ./examples/example-7.html
+
+# 动态组件
+
+运用场景： 当需要使用到某些子组件时，希望能在需要的时候才进行初始化。
+
+用法： 在初始化组件时，不需在components中定义子组件，而是在某些事件中对子组件进行实例化再插入到需要的位置。
+
+例子： ./examples/example-8.html
