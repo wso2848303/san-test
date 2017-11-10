@@ -289,3 +289,36 @@ san.defineComponent({
 slot: 可以认为是组件引用的进阶版，支持通过在调用组件中定义插槽，然后在调用时插入需要的内容
 
 例子参考 ./examples/example-5.html
+
+
+# 实例化组件时定义数据
+
+传入数据例子
+
+```javascript
+var test = new Test({
+  data: {
+    text: 'Hello world'
+  }
+});
+```
+
+> 在实例化时传入的数据会直接绑定进组件，且优先级要高于组件内的initData
+
+# 过滤器定义
+
+```javascript
+var test = new Test({
+  filters: {
+    testFilter: function (arg1, arg2) {
+      return arg1 + arg2;
+    }
+  }
+});
+```
+
+在模板中调用方式是这样的，最后根据定义的内容得到结果是 text + 'add message'
+
+```html
+<div>{{text | testFilter('add message')}}</div>
+```

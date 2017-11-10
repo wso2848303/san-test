@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+    </style>
+</head>
+<body>
+  <div class="example" id="dataTest"></div>
+  <script type="text/javascript">
+    var DataTest = san.defineComponent({
+      template: [
+        '<template>',
+          '<div>{{text}}</div>',
+          '<div>{{text1}}</div>',
+          '<div>{{text | stringFilter}}</div>',
+          '<div>{{text | stringFilter("addText")}}</div>',
+        '</template>'
+      ].join(''),
+      initData: function () {
+        return {
+          text: 'origin'
+        }
+      },
+      computed: {
+        text1: function () {
+          return this.data.get('text') + ' computed!';
+        }
+      },
+      filters: {
+        stringFilter: function (text, addText) {
+          if (!addText || addText === '') {
+            addText = 'filter!';
+          }
+          return text + ' ' + addText;
+        }
+      }
+    });
+    var dataTest = new DataTest({
+      data: {
+        text: 'Hello world!'
+      }
+    });
+    dataTest.attach(document.getElementById('dataTest'));
+  </script>
+</body>
+</html>
