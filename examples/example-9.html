@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+  <html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <script type="text/javascript" src="./lib/san.dev.js"></script>
+    <style>
+      .example {margin-bottom: 40px;}
+    </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="main">
+    <!--s-data:{"tabText":"tab","text":"one","title":"1"}-->
+    <div s-component="ui-tab" prop-text="{{tabText}}">
+        <div prop-class="head" class="head">
+            <!--s-slot:title-->
+            <h3 prop-title="{{title}}" title="1"><!--s-text:{{title}}-->1<!--/s-text--></h3>
+            <!--/s-slot-->
+        </div>
+        <div>
+            <!--s-slot-->
+            <p prop-title="{{text}}" title="one"><!--s-text:{{text}}-->one<!--/s-text--></p>
+            <!--/s-slot-->
+        </div>
+    </div>
+</div>
+</div>
+  <script type="text/javascript">
+  var Tab = san.defineComponent({
+  template: [
+      '<div>',
+      '    <div class="head"><slot name="title"></slot></div>',
+      '    <div><slot></slot></div>',
+      '</div>'
+  ].join('\n')
+});
+var MyComponent = san.defineComponent({
+  components: {
+      'ui-tab': Tab
+  },
+  template: [
+      '<div><ui-tab text="{{tabText}}">',
+      '    <h3 slot="title" title="{{title}}">{{title}}</h3>',
+      '    <p title="{{text}}">{{text}}</p>',
+      '</ui-tab></div>'
+  ].join('\n'),
+  attached: function () {
+    console.log(this.data);
+  }
+});
+var myComponent = new MyComponent({
+  el: document.getElementById('main')
+});
+  </script>
+</body>
+</html>

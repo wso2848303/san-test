@@ -362,3 +362,245 @@ var test = new Test({
 用法： 在初始化组件时，不需在components中定义子组件，而是在某些事件中对子组件进行实例化再插入到需要的位置。
 
 例子： ./examples/example-8.html
+
+# 组件反解
+
+官方文档：[https://ecomfe.github.io/san/tutorial/reverse/](https://ecomfe.github.io/san/tutorial/reverse/)
+
+根据官方文档的几种方法都试了下，发现暂时只有 s-data 是能明显看出效果的，其他的暂时还没发现要如何进行测试以及具体效果，暂缓
+
+# 组件API
+
+详细参考官方文档：[https://ecomfe.github.io/san/doc/api/](https://ecomfe.github.io/san/doc/api/)
+
+## data
+
+实例化时候使用，在定义组件时对应方法为initData，initData要求直接返回object
+
+```javascript
+//initData
+var MyComponent = san.defineComponent({
+  initData: function () {
+    return {
+      text: 'hello world'
+    }
+  }
+});
+//data
+var component = new MyComponent({
+  data: {
+    text: 'Hello world'
+  }
+});
+```
+
+## el
+
+组件根元素。传入此参数意味着不使用组件的 template 作为视图模板，一般为在使用组件反解时使用，但当前组件反解这块尚有疑问，因此暂缓
+
+```javascript
+var component = new MyComponent({
+  el: document.getElementById('test')
+})
+```
+
+## compiled
+
+组件钩子函数，组件视图模板编译完成时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  compiled: function () { }
+})
+```
+
+## inited
+
+组件钩子函数，组件实例初始化完成
+
+```javascript
+var MyComponent = san.defineComponent({
+  inited: function () { }
+})
+```
+
+## created
+
+组件钩子函数，组件元素创建完成时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  created: function () { }
+})
+```
+
+## attached
+
+组件钩子函数，组件已被附加到页面中时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  attached: function () { }
+})
+```
+
+## detached
+
+组件钩子函数，组件从页面中移除时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  detached: function () { }
+})
+```
+
+## disposed
+
+组件钩子函数，组件卸载完成时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  disposed: function () { }
+})
+```
+
+## updated
+
+组件钩子函数，组件由于数据变化，视图完成一次刷新时调用
+
+```javascript
+var MyComponent = san.defineComponent({
+  updated: function () { }
+})
+```
+
+## template
+
+组件视图模板内容，定义组件时声明
+
+```javascript
+var MyComponent = san.defineComponent({
+  template: [
+    '<div></div>'
+  ].join('')
+})
+```
+
+## filters
+
+声明组件过滤器，定义组件时声明
+
+```javascript
+var MyComponent = san.defineComponent({
+  filters: {
+    filter1: function (value, arg) {
+      return value + arg;
+    }
+  }
+});
+```
+
+## components
+
+声明组件中调用的子组件，定义组件时声明
+
+```javascript
+var SubComponent = san.defineComponent({});
+var MyComponent = san.defineComponent({
+  components: {
+    'ui-sub': SubComponent
+  },
+  template: [
+    '<ui-sub></ui-sub>'
+  ].join('')
+});
+```
+
+## computed
+
+声明组件中需要计算后得到的参数（尽可能保证模板纯净）
+
+```javascript
+var MyComponent = san.defineComponent({
+  computed: {
+    name: function () {
+      return this.data.get('familyName') + this.data.get('personalName')
+    }
+  }
+})
+```
+
+## message
+
+message是当组件作为上层组件时捕捉下层组件dispatch声明的方法时调用的方法
+
+```javascript
+var SelectItem = san.defineComponent({
+    template:
+        '<li on-click="select" class="{{value === selectValue ? \'selected\' : \'\'">'
+        + '<slot></slot>'
+        + '</li>',
+    // 子组件在各种时机派发消息
+    select: function () {
+        var value = this.data.get('value');
+        this.dispatch('UI:select-item-selected', value);
+    }
+});
+var Select = san.defineComponent({
+    template: '<ul><slot></slot></ul>',
+    // 上层组件处理自己想要的消息
+    messages: {
+        'UI:select-item-selected': function (arg) {
+            var value = arg.value;
+            this.data.set('value', value);
+            // 原则上上层组件允许更改下层组件的数据，因为更新流是至上而下的
+            var len = this.items.length;
+            while (len--) {
+                this.items[len].data.set('selectValue', value);
+            }
+        }
+    },
+    inited: function () {
+        this.items = [];
+    }
+});
+var MyComponent = san.defineComponent({
+    components: {
+        'ui-select': Select,
+        'ui-selectitem': SelectItem
+    },
+    template: ''
+        + '<div>'
+        + '  <ui-select value="{=value=}">'
+        + '    <ui-selectitem value="1">one</ui-selectitem>'
+        + '    <ui-selectitem value="2">two</ui-selectitem>'
+        + '    <ui-selectitem value="3">three</ui-selectitem>'
+        + '  </ui-select>'
+        + '</div>'
+});
+```
+
+## fire
+
+派发一个自定义事件。San 为组件提供了自定义事件功能，组件开发者可以通过该方法派发事件。事件可以在视图模板中通过 on- 的方式绑定监听，也可以通过组件实例的 on 方法监听
+
+```javascript
+var Label = san.defineComponent({
+    template: '<template class="ui-label"><a on-click="clicker" title="{{text}}">{{text}}</a></template>',
+    clicker: function () {
+        this.fire('customclick', this.data.get('text') + ' clicked');
+    }
+});
+var MyComponent = san.defineComponent({
+    initData: function () {
+        return {name: 'San'};
+    },
+    components: {
+        'ui-label': Label
+    },
+    template: '<div><ui-label text="{{name}}" on-customclick="labelClicker($event)"></ui-label></div>',
+    labelClicker: function (doneMsg) {
+        alert(doneMsg);
+    }
+});
+```
