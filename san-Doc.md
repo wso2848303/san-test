@@ -60,6 +60,8 @@ var myApp = new MyApp();
 myApp.attach(document.body);
 ```
 
+例子：./examples/example-1.html
+
 > 基本只需要三步就能把需要的内容展示到页面上
 >
 > 1. 定义组件对象
@@ -92,6 +94,8 @@ ps: 关于数据绑定，san的数据绑定方式与微信/支付宝小程序非
 <input type="text" value="{= name =}">
 <span>{{= name =}}</span>
 ```
+
+例子：./examples/example-1.html
 
 > 数据双向绑定方式为 {= xxxxxxx =} 这种方式，内容只可以为普通变量和属性访问表达式。
 >
@@ -147,6 +151,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-1.html
+
 2.set 方法
 
 例6
@@ -164,6 +170,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-1.html
+
 3.获取数据
 
 例7
@@ -174,6 +182,8 @@ san.defineComponent({
     }
 });
 ```
+
+例子：./examples/example-1.html
 
 > 这里可以看出，在数据设置以及获取数据的方式上，与小程序是非常类似的，但是除此以外，san还提供了一些方法来设置数据
 
@@ -187,6 +197,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-2.html
+
 5.pop
 ```javascript
 //在数组末尾弹出一条数据
@@ -196,6 +208,8 @@ san.defineComponent({
     }
 });
 ```
+
+例子：./examples/example-2.html
 
 6.unshift
 ```javascript
@@ -207,6 +221,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-2.html
+
 7.shift
 ```javascript
 //在数组开始弹出一条数据。
@@ -216,6 +232,8 @@ san.defineComponent({
     }
 });
 ```
+
+例子：./examples/example-2.html
 
 7.remove
 ```javascript
@@ -227,6 +245,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-2.html
+
 8.removeAt
 ```javascript
 //通过数据项的索引移除一条数据。
@@ -237,6 +257,8 @@ san.defineComponent({
 });
 ```
 
+例子：./examples/example-2.html
+
 9.splice
 ```javascript
 //向数组中添加或删除项目。
@@ -246,6 +268,8 @@ san.defineComponent({
     }
 });
 ```
+
+例子：./examples/example-2.html
 
 ## 数据校验
 
