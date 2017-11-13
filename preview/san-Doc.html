@@ -1,0 +1,371 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:san-Doc</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="-doc-">完整Doc地址</h1>
+<p><a href="https://ecomfe.github.io/san/">https://ecomfe.github.io/san/</a></p>
+<h1 id="-">安装/包下载</h1>
+<blockquote>
+<ol>
+<li><p><a href="https://github.com/ecomfe/san/releases">https://github.com/ecomfe/san/releases</a></p>
+</li>
+<li><p>npm install san</p>
+</li>
+</ol>
+</blockquote>
+<h1 id="-">使用</h1>
+<h2 id="script-">script 引用</h2>
+<pre><code class="lang-html">&lt;!-- 引用直接下载下来的San --&gt;
+&lt;script src=&quot;san的目录/dist/san.js&quot;&gt;&lt;/script&gt;
+&lt;!-- 引用通过NPM下载下来的San --&gt;
+&lt;script src=&quot;node_modules/san/dist/san.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2 id="amd">AMD</h2>
+<pre><code class="lang-javascript">require.config({
+    packages: [
+        {
+            name: &#39;san&#39;,
+            location: &#39;san-path/dist/san&#39;
+        }
+    ]
+});
+</code></pre>
+<h1 id="mvvm">MVVM</h1>
+<p>MVVM: Model-View-ViewModel</p>
+<p>一句话总结 Web 前端 MVVM：操作数据，就是操作视图，就是操作 DOM（所以无须操作 DOM ）。</p>
+<blockquote>
+<p>三层架构：</p>
+<p>Model: Model: 域模型，用于持久化</p>
+<p>View: 作为视图模板存在</p>
+<p>ViewModel: 作为视图的模型，为视图服务</p>
+</blockquote>
+<h1 id="hello-world">Hello world</h1>
+<p>例1</p>
+<pre><code class="lang-javascript">var MyApp = san.defineComponent({
+    template: &#39;&lt;p&gt;Hello {{name}}!&lt;/p&gt;&#39;,
+    initData: function () {
+        return {
+            name: &#39;world&#39;
+        };
+    }
+});
+var myApp = new MyApp();
+myApp.attach(document.body);
+</code></pre>
+<blockquote>
+<p>基本只需要三步就能把需要的内容展示到页面上</p>
+<ol>
+<li><p>定义组件对象</p>
+</li>
+<li><p>声明对象</p>
+</li>
+<li><p>把对象放到页面对应位置</p>
+</li>
+</ol>
+<p><strong>初始化内容时，模板内容必须为单个容器，所有内容也必须在这个容器中</strong></p>
+</blockquote>
+<h1 id="-">数据绑定</h1>
+<p>ps: 关于数据绑定，san的数据绑定方式与微信/支付宝小程序非常类似</p>
+<h2 id="-">数据展示绑定</h2>
+<p>例2</p>
+<pre><code class="lang-html">&lt;span text=&quot;{{name}}&quot; title=&quot;This is {{name}}&quot;&gt;{{name}}&lt;/span&gt;
+</code></pre>
+<p>例3</p>
+<pre><code class="lang-html">&lt;p&gt;Hello {{name | upper}}!&lt;/p&gt;
+</code></pre>
+<blockquote>
+<p>数据绑定方式为 {{xxxxx}}这种方式，其中内容可以为变量、表达式以及过滤器，过滤的使用方式由例3所示</p>
+</blockquote>
+<h2 id="-">数据双向绑定</h2>
+<p>例4</p>
+<pre><code class="lang-html">&lt;input type=&quot;text&quot; value=&quot;{= name =}&quot;&gt;
+&lt;span&gt;{{= name =}}&lt;/span&gt;
+</code></pre>
+<blockquote>
+<p>数据双向绑定方式为 {= xxxxxxx =} 这种方式，内容只可以为普通变量和属性访问表达式。</p>
+<p>但是这里有一点要注意，在我测试的时候，发现有时候使用的是{= xxxx =}，而有时候却是 {{= xxxxxx =}} 这样的，具体原因未知，但归纳下来基本上这样的：</p>
+<p>标签属性中使用的话为 {= xxxxx =} 这种方式， 而当需要插值展示的时候则为 {{= xxxxx =}} 这样。</p>
+</blockquote>
+<h2 id="-">表达式/过滤器</h2>
+<p><strong>关于表达式</strong></p>
+<p>大致有以下这些</p>
+<ol>
+<li>普通变量<ol>
+<li><p>{{name}}</p></li>
+</ol>
+</li>
+<li>属性访问<ol>
+<li><p>{{person.name}}</p></li>
+<li><p>{{persons[1]}}</p></li>
+</ol>
+</li>
+<li>一元否定<ol>
+<li><p>{{!isOK}}</p></li>
+<li><p>{{!!isOK}}</p></li>
+</ol>
+</li>
+<li>二元运算<ol>
+<li><p>{{num1 + num2}}</p></li>
+<li><p>{{num1 - num2}}</p></li>
+<li><p>{{num1 * num2}}</p></li>
+<li><p>{{num1 / num2}}</p></li>
+<li><p>{{num1 + num2 * num3}}</p></li>
+</ol>
+</li>
+<li>二元关系<ol>
+<li><p>{{num1 &gt; num2}}</p></li>
+<li><p>{{num1 !== num2}}</p></li>
+</ol>
+</li>
+<li>三元条件<ol>
+<li><p>{{num1 &gt; num2 ? num1 : num2}}</p></li>
+</ol>
+</li>
+<li>括号<ol>
+<li><p>{{a * (b + c)}}</p>
+
+</li>
+</ol>
+</li>
+</ol>
+<p><strong>关于过滤器</strong></p>
+<h2 id="-">数据操作</h2>
+<p>1.初始化时设置数据</p>
+<p>例5</p>
+<pre><code class="lang-javascript">san.defineComponent({
+    initData: function () {
+        return {
+            width: 200,
+            top: 100,
+            left: -1000
+        };
+    }
+});
+</code></pre>
+<p>2.set 方法</p>
+<p>例6</p>
+<pre><code class="lang-javascript">san.defineComponent({
+    attached: function () {
+        requestUser().then(this.userReceived.bind(this));
+    },
+    userReceived: function (data) {
+        this.data.set(&#39;user&#39;, data);
+    },
+    changeEmail: function (email) {
+        this.data.set(&#39;user.email&#39;, email);
+    }
+});
+</code></pre>
+<p>3.获取数据</p>
+<p>例7</p>
+<pre><code class="lang-javascript">san.defineComponent({
+    alert: function () {
+      alert(this.data.get(&#39;user&#39;))
+    }
+});
+</code></pre>
+<blockquote>
+<p>这里可以看出，在数据设置以及获取数据的方式上，与小程序是非常类似的，但是除此以外，san还提供了一些方法来设置数据</p>
+</blockquote>
+<p>4.push</p>
+<pre><code class="lang-javascript">//在数组末尾插入一条数据。
+san.defineComponent({
+    addUser: function (name) {
+        this.data.push(&#39;users&#39;, {name: name});
+    }
+});
+</code></pre>
+<p>5.pop</p>
+<pre><code class="lang-javascript">//在数组末尾弹出一条数据
+san.defineComponent({
+    rmLast: function () {
+        this.data.pop(&#39;users&#39;);
+    }
+});
+</code></pre>
+<p>6.unshift</p>
+<pre><code class="lang-javascript">//在数组开始插入一条数据。
+san.defineComponent({
+    addUser: function (name) {
+        this.data.unshift(&#39;users&#39;, {name: name});
+    }
+});
+</code></pre>
+<p>7.shift</p>
+<pre><code class="lang-javascript">//在数组开始弹出一条数据。
+san.defineComponent({
+    rmFirst: function () {
+        this.data.shift(&#39;users&#39;);
+    }
+});
+</code></pre>
+<p>7.remove</p>
+<pre><code class="lang-javascript">//移除一条数据。只有当数组项与传入项完全相等(===)时，数组项才会被移除。
+san.defineComponent({
+    rm: function (user) {
+        this.data.remove(&#39;users&#39;, user);
+    }
+});
+</code></pre>
+<p>8.removeAt</p>
+<pre><code class="lang-javascript">//通过数据项的索引移除一条数据。
+san.defineComponent({
+    rmAt: function (index) {
+        this.data.removeAt(&#39;users&#39;, index);
+    }
+});
+</code></pre>
+<p>9.splice</p>
+<pre><code class="lang-javascript">//向数组中添加或删除项目。
+san.defineComponent({
+    rm: function (index, deleteCount) {
+        this.data.splice(&#39;users&#39;, [index, deleteCount]);
+    }
+});
+</code></pre>
+<h2 id="-">数据校验</h2>
+<p>关于数据校验，用法与react中非常类似，但是实际尝试后发现应用起来效果并不好，其中主要原因就是错误信息的抛出方式是console error，因此除了组件调用时的参数验证使用这种方式，正常情况下的数据验证还是自己进行比较好。具体例子可查看官方文档<a href="https://ecomfe.github.io/san/tutorial/data-checking/">https://ecomfe.github.io/san/tutorial/data-checking/</a></p>
+<h1 id="-">表单</h1>
+<p>具体例子参考 ./examples/example-3.html</p>
+<h1 id="-">生命周期</h1>
+<ol>
+<li>compiled - 组件视图模板编译完成</li>
+<li>inited - 组件实例初始化完成</li>
+<li>created - 组件元素创建完成</li>
+<li>attached - 组件已被附加到页面中</li>
+<li>detached - 组件从页面中移除</li>
+<li>disposed - 组件卸载完成</li>
+</ol>
+<blockquote>
+<p>生命周期代表组件的状态，生命周期本质就是状态管理。</p>
+<p>在生命周期到达时，对应的钩子函数会被触发运行。</p>
+<p>并存。比如 attached 和 created 等状态是同时并存的。</p>
+<p>互斥。attached 和 detached 是互斥的，disposed 会互斥掉其它所有的状态。</p>
+<p>有的时间点并不代表组件状态，只代表某个行为。当行为完成时，钩子函数也会触发。如 updated 代表每次数据变化导致的视图变更完成。</p>
+</blockquote>
+<h1 id="template">template</h1>
+<p>之前提到了，San 要求组件对应 一个 HTML 元素，所以视图模板定义时，只能包含一个 HTML 元素，其它所有内容需要放在这个元素下。因此在定义模板时需要把内容包在一个容器中，san 提供template标签来作为外层容器，效果与div等效</p>
+<h1 id="slot-">slot/组件引用</h1>
+<p>组件引用：实际就与react中的引入组件是一样的，但是需要在当前组件中声明调用组件以及其别名才行</p>
+<blockquote>
+<p>从例子中可以看出，当调用某个组件的时候，当前组件的数据并不会影响调用组件的数据，因此每个组件的数据都是独立的，除非全局函数，否则在闭包环境下数据都是安全的</p>
+<p>不过和react一样，在调用时也可通过传递参数来控制调用组件的数据，定义方式也非常简单。</p>
+</blockquote>
+<p>slot: 可以认为是组件引用的进阶版，支持通过在调用组件中定义插槽，然后在调用时插入需要的内容</p>
+<p>例子参考 ./examples/example-5.html</p>
+<h1 id="-">实例化组件时定义数据</h1>
+<p>传入数据例子</p>
+<pre><code class="lang-javascript">var test = new Test({
+  data: {
+    text: &#39;Hello world&#39;
+  }
+});
+</code></pre>
+<blockquote>
+<p>在实例化时传入的数据会直接绑定进组件，且优先级要高于组件内的initData</p>
+</blockquote>
+<h1 id="-">过滤器定义</h1>
+<pre><code class="lang-javascript">var test = new Test({
+  filters: {
+    testFilter: function (arg1, arg2) {
+      return arg1 + arg2;
+    }
+  }
+});
+</code></pre>
+<p>在模板中调用方式是这样的，最后根据定义的内容得到结果是 text + &#39;add message&#39;</p>
+<pre><code class="lang-html">&lt;div&gt;{{text | testFilter(&#39;add message&#39;)}}&lt;/div&gt;
+</code></pre>
+<h1 id="-dispatch-message">消息 dispatch/message</h1>
+<p>消息将沿着组件树向上传递，<strong>直到遇到第一个处理该消息的组件</strong>，则停止。通过 messages 可以声明组件要处理的消息。messages 是一个对象，key 是消息名称，value 是消息处理的函数，接收一个包含 target(派发消息的组件) 和 value(消息的值) 的参数对象。</p>
+<p>消息主要用于组件与非 owner 的上层组件进行通信。</p>
+<p>例子为 ./examples/example-7.html</p>
+<h1 id="-">动态组件</h1>
+<p>运用场景： 当需要使用到某些子组件时，希望能在需要的时候才进行初始化。</p>
+<p>用法： 在初始化组件时，不需在components中定义子组件，而是在某些事件中对子组件进行实例化再插入到需要的位置。</p>
+<p>例子： ./examples/example-8.html</p>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
