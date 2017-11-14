@@ -361,7 +361,24 @@ san.defineComponent({
 <p>例子： ./examples/example-8.html</p>
 <h1 id="-">组件反解</h1>
 <p>官方文档：<a href="https://ecomfe.github.io/san/tutorial/reverse/">https://ecomfe.github.io/san/tutorial/reverse/</a></p>
-<p>根据官方文档的几种方法都试了下，发现暂时只有 s-data 是能明显看出效果的，其他的暂时还没发现要如何进行测试以及具体效果，暂缓</p>
+<pre><code class="lang-html">&lt;div id=&quot;wrap&quot;&gt;
+  &lt;div&gt;
+    &lt;!--s-data:{&#39;text&#39;: &#39;hello&#39;}--&gt;
+    &lt;span on-click=&quot;handleClick&quot;&gt;&lt;!--s-text:{{text}}--&gt;world&lt;!--/s-text--&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-javascript">var MyComponent = san.defineComponent({
+  handleClick: function () {
+    console.log(this.data.get(&#39;text&#39;));
+    this.data.set(&#39;text&#39;, this.data.get(&#39;text&#39;));
+  }
+});
+var myComponent = new MyComponent({
+  el: document.getElementById(&#39;wrap&#39;)
+});
+</code></pre>
+<p>这里要注意一点，s-data必须与s-text值一致，不然会造成数值不统一，继而在后续的操作中出现数据串行的问题。比如这里例子中，s-data中设置text为hello，而在s-text中设置text为world，这时候触发事件，console出来的值hello，然而拿这个值去调用set方法，这时候实际的值却是world。</p>
 <h1 id="-api">组件API</h1>
 <p>详细参考官方文档：<a href="https://ecomfe.github.io/san/doc/api/">https://ecomfe.github.io/san/doc/api/</a></p>
 <h2 id="data">data</h2>
@@ -382,7 +399,7 @@ var component = new MyComponent({
 });
 </code></pre>
 <h2 id="el">el</h2>
-<p>组件根元素。传入此参数意味着不使用组件的 template 作为视图模板，一般为在使用组件反解时使用，但当前组件反解这块尚有疑问，因此暂缓</p>
+<p>组件根元素。传入此参数意味着不使用组件的 template 作为视图模板，一般为在使用组件反解时使用。</p>
 <pre><code class="lang-javascript">var component = new MyComponent({
   el: document.getElementById(&#39;test&#39;)
 })

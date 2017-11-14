@@ -367,7 +367,28 @@ var test = new Test({
 
 官方文档：[https://ecomfe.github.io/san/tutorial/reverse/](https://ecomfe.github.io/san/tutorial/reverse/)
 
-根据官方文档的几种方法都试了下，发现暂时只有 s-data 是能明显看出效果的，其他的暂时还没发现要如何进行测试以及具体效果，暂缓
+```html
+<div id="wrap">
+  <div>
+    <!--s-data:{'text': 'hello'}-->
+    <span on-click="handleClick"><!--s-text:{{text}}-->world<!--/s-text--></span>
+  </div>
+</div>
+```
+
+```javascript
+var MyComponent = san.defineComponent({
+  handleClick: function () {
+    console.log(this.data.get('text'));
+    this.data.set('text', this.data.get('text'));
+  }
+});
+var myComponent = new MyComponent({
+  el: document.getElementById('wrap')
+});
+```
+
+这里要注意一点，s-data必须与s-text值一致，不然会造成数值不统一，继而在后续的操作中出现数据串行的问题。比如这里例子中，s-data中设置text为hello，而在s-text中设置text为world，这时候触发事件，console出来的值hello，然而拿这个值去调用set方法，这时候实际的值却是world。
 
 # 组件API
 
@@ -396,7 +417,7 @@ var component = new MyComponent({
 
 ## el
 
-组件根元素。传入此参数意味着不使用组件的 template 作为视图模板，一般为在使用组件反解时使用，但当前组件反解这块尚有疑问，因此暂缓
+组件根元素。传入此参数意味着不使用组件的 template 作为视图模板，一般为在使用组件反解时使用。
 
 ```javascript
 var component = new MyComponent({
